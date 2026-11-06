@@ -4,9 +4,12 @@ import type { ComponentType } from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
 import { PROFILE } from "@/data/profile";
+import { WORK } from "@/data/work";
 
 type Social = { href: string; label: string; icon: ComponentType<{ className?: string }> };
 
+// Split hero in the template's style: heading and summary on the left, a photo collage on the right.
+// The social links and previous/next arrows are kept from the earlier version of this page.
 export function ExperienceHero() {
   const candidates: (Social | null)[] = [
     PROFILE.links.facebook ? { href: PROFILE.links.facebook, label: "Facebook", icon: FaFacebook } : null,
@@ -19,34 +22,37 @@ export function ExperienceHero() {
   const socials = candidates.filter((s): s is Social => s !== null);
 
   return (
-    <section className="px-4 pb-16 pt-12 md:pt-16">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 rounded-3xl bg-[#244A20]/60 p-6 ring-1 ring-white/10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:p-12 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700">
-        {/* Framed portrait. It overhangs the panel slightly on larger screens for depth. */}
-        <div className="relative mx-auto w-full max-w-sm md:-my-10 md:max-w-none">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-primary/20 shadow-2xl">
-            <Image
-              src={PROFILE.photo}
-              alt={`Portrait of ${PROFILE.name}`}
-              fill
-              priority
-              sizes="(min-width: 768px) 40vw, 90vw"
-              className="object-cover object-top"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div aria-hidden className="h-1 w-16 rounded-full bg-secondary" />
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">Experience</p>
-          <h1 className="font-serif text-5xl font-medium leading-tight tracking-tight text-white md:text-6xl">
-            {PROFILE.name}
+    <section className="bg-cream px-6 pb-20 pt-16 text-navy md:pb-28 md:pt-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
+        <div className="space-y-7 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700">
+          <span className="inline-flex items-center gap-2 rounded-full border border-navy/30 px-4 py-1 text-xs font-medium uppercase tracking-wider">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-cta" />
+            Experience
+          </span>
+          <h1 className="font-serif text-5xl font-medium leading-[1.08] tracking-tight md:text-6xl">
+            Education and experience,{" "}
+            <span className="italic text-cta">shaped by design and software</span>
           </h1>
-          <p className="text-lg text-primary">{PROFILE.tagline}</p>
-          <p className="max-w-xl text-base leading-relaxed text-white/85 md:text-lg">{PROFILE.summary}</p>
+          <p className="max-w-lg text-base leading-relaxed text-navy/70 md:text-lg">{PROFILE.summary}</p>
+
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-cta px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-cta/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta"
+            >
+              Contact me <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <Link
+              href="/projects"
+              className="inline-flex items-center justify-center rounded-md border border-navy/30 px-7 py-3.5 text-sm font-semibold uppercase tracking-wide transition-colors hover:border-cta hover:text-cta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta"
+            >
+              View projects
+            </Link>
+          </div>
 
           <div className="flex flex-wrap items-center justify-between gap-6 pt-4">
             {socials.length > 0 && (
-              <ul className="flex items-center gap-5">
+              <ul className="flex items-center gap-4">
                 {socials.map(({ href, label, icon: Icon }) => {
                   const isMail = href.startsWith("mailto:");
                   return (
@@ -56,9 +62,9 @@ export function ExperienceHero() {
                         aria-label={label}
                         target={isMail ? undefined : "_blank"}
                         rel={isMail ? undefined : "noopener noreferrer"}
-                        className="text-secondary transition-opacity hover:opacity-80"
+                        className="grid h-10 w-10 place-items-center rounded-full border border-navy/20 text-navy transition-colors hover:border-cta hover:text-cta"
                       >
-                        <Icon className="h-5 w-5" />
+                        <Icon className="h-4 w-4" />
                       </a>
                     </li>
                   );
@@ -71,18 +77,39 @@ export function ExperienceHero() {
               <Link
                 href="/about"
                 aria-label="Previous: About"
-                className="grid h-11 w-11 place-items-center rounded-md bg-secondary text-secondary-foreground transition-transform hover:scale-105"
+                className="grid h-11 w-11 place-items-center rounded-full bg-navy text-white transition-transform hover:scale-105"
               >
                 <ArrowLeft className="h-5 w-5" aria-hidden />
               </Link>
               <Link
-                href="/projects"
-                aria-label="Next: Projects"
-                className="grid h-11 w-11 place-items-center rounded-md bg-secondary text-secondary-foreground transition-transform hover:scale-105"
+                href="/contact"
+                aria-label="Next: Contact"
+                className="grid h-11 w-11 place-items-center rounded-full bg-navy text-white transition-transform hover:scale-105"
               >
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </Link>
             </div>
+          </div>
+        </div>
+
+        {/* Photo collage: your portrait with two design samples, on a steel-blue block */}
+        <div className="relative mx-auto grid w-full max-w-md grid-cols-2 gap-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-1000">
+          <div aria-hidden className="absolute -right-5 -top-5 h-full w-full rounded-[2rem] bg-secondary/70" />
+          <div className="relative col-span-2 aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">
+            <Image
+              src={PROFILE.photo}
+              alt={`Portrait of ${PROFILE.name}`}
+              fill
+              priority
+              sizes="(min-width: 768px) 40vw, 90vw"
+              className="object-cover object-[center_25%]"
+            />
+          </div>
+          <div className="relative aspect-square overflow-hidden rounded-2xl shadow-xl">
+            <Image src={WORK[0].src} alt="" fill sizes="20vw" className="object-cover" />
+          </div>
+          <div className="relative aspect-square overflow-hidden rounded-2xl shadow-xl">
+            <Image src={WORK[1].src} alt="" fill sizes="20vw" className="object-cover" />
           </div>
         </div>
       </div>

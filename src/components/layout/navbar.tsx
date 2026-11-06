@@ -5,19 +5,31 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/site";
+import { PROFILE } from "@/data/profile";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const linkBase =
-  "relative py-1 text-sm font-bold uppercase tracking-wide text-white/80 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:text-base";
+  "relative py-1 text-[13px] font-semibold uppercase tracking-[0.12em] text-white/85 transition-colors hover:text-steel focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+
+// Monogram from the full name, for example "Joseph Baya Kwicha" becomes "JK".
+const initials = PROFILE.name
+  .split(" ")
+  .filter(Boolean)
+  .map((part, i, all) => (i === 0 || i === all.length - 1 ? part[0] : ""))
+  .join("")
+  .toUpperCase();
+
+// Pages whose first section sits behind the transparent header. About and Experience start on light bands, so their headers stay solid.
+const OVER_HERO = ["/", "/projects", "/contact"];
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // The Home, About and Projects heroes sit behind the header, so the header is transparent there until the user scrolls.
-  const overHero = (pathname === "/" || pathname === "/about" || pathname === "/projects") && !scrolled;
+  // The page heroes sit behind the header, so the header is transparent there until the user scrolls.
+  const overHero = OVER_HERO.includes(pathname) && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -43,36 +55,36 @@ export function Navbar() {
     };
   }, [open]);
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   const linkClass = (href: string) =>
-    cn(linkBase, isActive(href) && "text-white after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-white");
+    cn(
+      linkBase,
+      isActive(href) &&
+        "text-white after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-steel"
+    );
 
   return (
     <header
       className={cn(
         "sticky top-0 z-50 text-white transition-colors duration-300",
-        overHero ? "bg-transparent" : "bg-[#2E5A2A]/95 shadow-lg backdrop-blur-md"
+        overHero ? "bg-transparent" : "bg-navy/95 shadow-lg backdrop-blur-md"
       )}
     >
       <nav aria-label="Main" className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6">
         <Link
-          href="/#contact"
-          className="inline-flex items-center rounded-full bg-primary px-6 py-2 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          href="/"
+          aria-label={`${PROFILE.name}, home`}
+          className="grid h-11 w-11 place-items-center rounded-full border-2 border-steel font-serif text-base font-semibold tracking-wide text-steel transition-colors hover:bg-steel hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-          Contact
+          {initials}
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
-          <ul className="flex items-center gap-8">
+        <div className="hidden items-center gap-6 md:flex">
+          <ul className="flex items-center gap-7">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={isActive(item.href) ? "page" : undefined}
-                  className={linkClass(item.href)}
-                >
+                <Link href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className={linkClass(item.href)}>
                   {item.label}
                 </Link>
               </li>
@@ -81,7 +93,7 @@ export function Navbar() {
           <ThemeToggle className="text-white hover:bg-white/10 hover:text-white" />
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2 lg:hidden">
           <ThemeToggle className="text-white hover:bg-white/10 hover:text-white" />
           <button
             type="button"
@@ -97,7 +109,7 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-white/10 bg-[#2E5A2A] md:hidden">
+        <div id="mobile-menu" className="border-t border-white/10 bg-navy lg:hidden">
           <ul className="mx-auto flex max-w-7xl flex-col px-6 py-4">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
@@ -105,8 +117,8 @@ export function Navbar() {
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
                   className={cn(
-                    "block py-3 text-lg font-bold uppercase tracking-wide",
-                    isActive(item.href) ? "text-white" : "text-white/70 hover:text-white"
+                    "block border-b border-white/10 py-3 text-base font-semibold uppercase tracking-[0.12em]",
+                    isActive(item.href) ? "text-steel" : "text-white/80 hover:text-white"
                   )}
                 >
                   {item.label}

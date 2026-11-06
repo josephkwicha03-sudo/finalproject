@@ -1,83 +1,61 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PROFILE } from "@/data/profile";
+import { Parallax } from "@/components/motion/parallax";
 
-// Full-bleed hero, matching the Projects hero. The negative top margin pulls it up behind the
-// sticky header (h-20), and the top padding keeps the text clear of the navbar.
+// Split hero: text on the left, framed portrait on the right, on the navy background. The negative
+// top margin pulls it up behind the sticky header (h-20), and the top padding clears the navbar.
 export function Hero() {
   return (
-    <section className="-mt-20 relative isolate flex min-h-[600px] w-full items-center overflow-hidden bg-[#2E5A2A] md:min-h-[700px]">
-      {/* Photo sits on the right so the text on the left never covers the face */}
-      <div className="absolute inset-y-0 right-0 -z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_40%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_40%)] md:w-[66%]">
-        <Image
-          src={PROFILE.photo}
-          alt={`Portrait of ${PROFILE.name}`}
-          fill
-          priority
-          sizes="(min-width: 768px) 62vw, 100vw"
-          className="object-cover object-[center_20%]"
-        />
-      </div>
-
-      {/* Dark fade from the left keeps the text readable */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-[#2E5A2A] via-[#2E5A2A]/70 to-transparent" />
-      {/* Light fade at the top keeps the white navbar links readable */}
-      <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/70 to-transparent" />
-
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 pb-16 pt-32 md:px-8 md:pt-40">
-        <div className="max-w-2xl space-y-7 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700">
-          <p className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm text-white/85 backdrop-blur">
-            {PROFILE.tagline}
-          </p>
-          <h1 className="font-serif text-5xl font-medium leading-[1.05] tracking-tight text-white md:text-7xl">
+    <section className="-mt-20 relative isolate overflow-hidden bg-navy">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-40 pt-32 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:px-8 md:pb-44 md:pt-44">
+        <div className="space-y-7 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700">
+          <p className="text-sm font-medium uppercase tracking-[0.18em] text-steel">{PROFILE.tagline}</p>
+          <h1 className="font-serif text-5xl font-medium leading-[1.08] tracking-tight text-white md:text-6xl lg:text-7xl">
             <span className="block">{PROFILE.headline[0]}</span>
-            <span className="block text-white/60">{PROFILE.headline[1]}</span>
+            <span className="block italic text-steel">{PROFILE.headline[1]}</span>
           </h1>
-          <p className="max-w-lg text-lg leading-relaxed text-white/80 md:text-xl">{PROFILE.summary}</p>
+          <p className="max-w-xl text-base leading-relaxed text-white/80 md:text-lg">{PROFILE.summary}</p>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-cta px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-cta/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Get in touch <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
             <Link
               href="/projects"
-              className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-base font-semibold text-black transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center justify-center rounded-md border border-white/30 px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:border-steel hover:text-steel focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               View projects
             </Link>
-            <Link
-              href="/#contact"
-              className="inline-flex items-center justify-center rounded-xl border border-white/30 bg-white/5 px-6 py-3 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-            >
-              Get in touch
-            </Link>
+          </div>
+        </div>
+
+        {/* Portrait in a framed shape with a steel-blue block behind it, as in the reference layout */}
+        <Parallax speed={0.05} className="relative mx-auto w-full max-w-md">
+        <div className="relative w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-1000">
+          <div aria-hidden className="float-soft absolute -right-6 -top-6 h-full w-full rounded-[2.5rem] bg-secondary/80" />
+          <div aria-hidden className="float-soft absolute -bottom-6 -left-6 h-24 w-24 rounded-3xl bg-secondary" style={{ animationDelay: "-3s" }} />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-card shadow-2xl">
+            <Image
+              src={PROFILE.photo}
+              alt={`Portrait of ${PROFILE.name}`}
+              fill
+              priority
+              sizes="(min-width: 768px) 40vw, 90vw"
+              className="object-cover object-top"
+            />
           </div>
 
-          <dl className="flex flex-wrap gap-x-10 gap-y-4 pt-4">
-            {PROFILE.stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="font-serif text-4xl font-medium text-white">{stat.value}</dt>
-                <dd className="mt-1 text-sm text-white/70">{stat.label}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-
-      {/* Availability card, bottom right on larger screens */}
-      <div className="absolute bottom-8 right-6 hidden max-w-xs rounded-2xl border border-white/20 bg-white/10 p-5 text-white shadow-xl backdrop-blur-md md:right-10 md:block">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm text-white/70">Availability</p>
-            <p className="mt-1 text-lg font-medium">{PROFILE.availability.title}</p>
-            <p className="mt-2 text-sm leading-relaxed text-white/80">{PROFILE.availability.text}</p>
+          <div className="absolute bottom-6 left-4 right-4 rounded-2xl border border-white/15 bg-navy/90 p-5 shadow-xl backdrop-blur md:-left-10 md:right-auto md:w-72">
+            <p className="text-xs font-medium uppercase tracking-wider text-steel">{PROFILE.availability.title}</p>
+            <p className="mt-2 text-sm leading-relaxed text-white/85">{PROFILE.availability.text}</p>
           </div>
-          <Link
-            href="/#contact"
-            aria-label="Get in touch"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-black transition-transform hover:scale-105"
-          >
-            <ArrowUpRight className="h-5 w-5" aria-hidden />
-          </Link>
         </div>
+        </Parallax>
       </div>
     </section>
   );

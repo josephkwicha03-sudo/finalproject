@@ -4,12 +4,15 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Green palette
- *   Deep green  #2E5A2A  page background (white text)
- *   Light green #A5D18A  primary accent (dark green text on it)
- *   Yellow      #F0E56E  secondary accent (dark text on it)
- *   Orange      #E8994F  reserved for highlights
- * The page is green in both light and dark mode, so the theme toggle changes little.
+ * Navy palette (matches the Home, About, Projects, Experience and Contact heroes)
+ *   Navy        #0B1B4F  page background (white text)
+ *   Deep navy   #071238  footer and deepest panels
+ *   Card navy   #13266B  cards and framed panels
+ *   Steel blue  #8FC1E3  primary accent: eyebrows, dots and links (navy text on it)
+ *   Mid steel   #5B9BC4  secondary accent: shapes and icon chips
+ *   Bright blue #2F6BF0  call-to-action buttons (white text)
+ *   Cream       #FBF8F4  light sections on the home page (navy text)
+ * The site is dark in both light and dark mode, so the theme toggle changes little.
  */
 
 @theme inline {
@@ -33,6 +36,11 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-orange: var(--orange);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-cta: var(--cta);
+  --color-cream: var(--cream);
+  --color-steel: var(--steel);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -41,47 +49,53 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.4 0.07 140); /* #2E5A2A */
-  --foreground: oklch(1 0 0);
-  --card: oklch(0.46 0.07 140);
-  --card-foreground: oklch(1 0 0);
-  --primary: oklch(0.82 0.1 140); /* #A5D18A */
-  --primary-foreground: oklch(0.22 0.04 140);
-  --secondary: oklch(0.93 0.13 105); /* #F0E56E */
-  --secondary-foreground: oklch(0.22 0.04 140);
-  --muted: oklch(0.44 0.07 140);
-  --muted-foreground: oklch(0.9 0.03 140);
-  --accent: oklch(0.5 0.08 140);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(1 0 0 / 18%);
-  --input: oklch(1 0 0 / 22%);
-  --ring: oklch(0.82 0.1 140);
-  --orange: oklch(0.73 0.14 55); /* #E8994F */
-  --glow: oklch(0.82 0.1 140 / 0.2);
+  --navy: #0b1b4f;
+  --navy-deep: #071238;
+  --cta: #2f6bf0;
+  --cream: #fbf8f4;
+  --steel: #8fc1e3;
+  /* Light theme: cream page, navy text, white cards */
+  --background: #fbf8f4;
+  --foreground: #0b1b4f;
+  --card: #ffffff;
+  --card-foreground: #0b1b4f;
+  --primary: #2f6bf0;
+  --primary-foreground: #ffffff;
+  --secondary: #5b9bc4;
+  --secondary-foreground: #0b1b4f;
+  --muted: #eef2f8;
+  --muted-foreground: rgb(11 27 79 / 70%);
+  --accent: #e4ecf8;
+  --accent-foreground: #0b1b4f;
+  --destructive: #d92d2d;
+  --destructive-foreground: #ffffff;
+  --border: rgb(11 27 79 / 12%);
+  --input: rgb(11 27 79 / 18%);
+  --ring: #2f6bf0;
+  --orange: #e8994f;
+  --glow: rgb(47 107 240 / 0.12);
 }
 
 .dark {
-  --background: oklch(0.4 0.07 140);
-  --foreground: oklch(1 0 0);
-  --card: oklch(0.46 0.07 140);
-  --card-foreground: oklch(1 0 0);
-  --primary: oklch(0.82 0.1 140);
-  --primary-foreground: oklch(0.22 0.04 140);
-  --secondary: oklch(0.93 0.13 105);
-  --secondary-foreground: oklch(0.22 0.04 140);
-  --muted: oklch(0.44 0.07 140);
-  --muted-foreground: oklch(0.9 0.03 140);
-  --accent: oklch(0.5 0.08 140);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.15 0 0);
-  --border: oklch(1 0 0 / 18%);
-  --input: oklch(1 0 0 / 22%);
-  --ring: oklch(0.82 0.1 140);
-  --orange: oklch(0.73 0.14 55);
-  --glow: oklch(0.82 0.1 140 / 0.25);
+  --background: #0b1b4f;
+  --foreground: #ffffff;
+  --card: #13266b;
+  --card-foreground: #ffffff;
+  --primary: #8fc1e3;
+  --primary-foreground: #0b1b4f;
+  --secondary: #5b9bc4;
+  --secondary-foreground: #0b1b4f;
+  --muted: #1a2e78;
+  --muted-foreground: #d5e4f3;
+  --accent: #1f3a8a;
+  --accent-foreground: #ffffff;
+  --destructive: #f07178;
+  --destructive-foreground: #0b1b4f;
+  --border: rgb(255 255 255 / 14%);
+  --input: rgb(255 255 255 / 20%);
+  --ring: #8fc1e3;
+  --orange: #e8994f;
+  --glow: rgb(143 193 227 / 0.25);
 }
 
 @layer base {
@@ -103,6 +117,65 @@
   }
 }
 
+/* Scroll reveal: elements start hidden and fade up once they enter the viewport (see components/reveal.tsx). */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .hero-glow {
   background: radial-gradient(ellipse at top, var(--glow), transparent 70%);
+}
+
+/* Home page motion: a continuous ticker and gently floating accents. Both stop for reduced-motion users. */
+@keyframes ticker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(4deg);
+  }
+}
+
+.ticker-track {
+  animation: ticker 28s linear infinite;
+}
+
+.float-soft {
+  animation: float-soft 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track,
+  .float-soft {
+    animation: none;
+  }
 }

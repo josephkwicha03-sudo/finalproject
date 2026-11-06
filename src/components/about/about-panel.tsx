@@ -1,66 +1,87 @@
 import Image from "next/image";
-import { Star } from "lucide-react";
 import { PROFILE } from "@/data/profile";
+import { SKILLS } from "@/data/skills";
+
+// Full-width colour bands in the template's style. Each band has a label on the left and text on the
+// right. Only existing content is used: the biography paragraphs, the leadership skills, your own
+// photo and design image, and the highlights from your About data.
+function Band({
+  label,
+  children,
+  className = "",
+  innerClassName = "",
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+  innerClassName?: string;
+}) {
+  return (
+    <section className={`relative isolate overflow-hidden px-6 py-16 md:py-24 ${className}`}>
+      <div className={`mx-auto grid max-w-6xl gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-16 ${innerClassName}`}>
+        <h2 className="font-sans text-base font-bold uppercase tracking-[0.12em] md:pt-1 md:text-lg">{label}</h2>
+        <div className="max-w-2xl text-base leading-relaxed md:text-[17px]">{children}</div>
+      </div>
+    </section>
+  );
+}
 
 export function AboutPanel() {
   const about = PROFILE.about;
-  const stats = PROFILE.stats;
+  const leadership = SKILLS.find((group) => group.group === "Leadership")?.items ?? [];
 
   return (
-    <div className="grid gap-6 rounded-3xl bg-[#2E5A2A] p-6 text-white ring-1 ring-white/10 md:grid-cols-2 md:p-10 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700">
-      {/* Left column: heading, bio and trust card */}
-      <div className="flex flex-col justify-between gap-10">
-        <div className="space-y-5">
-          <p className="text-sm font-medium uppercase tracking-wider text-white/60">{about.eyebrow}</p>
-          <h2 className="font-serif text-3xl font-medium tracking-tight md:text-4xl">{about.heading}</h2>
-          <div className="space-y-4 text-base leading-relaxed text-white/70">
-            {about.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
-        </div>
+    <div>
+      {/* Blue band: first biography paragraph */}
+      <Band label="Who I am" className="bg-cta text-white">
+        <p>{about.paragraphs[0]}</p>
+      </Band>
 
-        <div className="rounded-2xl bg-white p-6 text-zinc-900 shadow-xl">
-          <div className="flex items-center gap-3">
-            <Image
-              src={PROFILE.photo}
-              alt=""
-              width={36}
-              height={36}
-              className="h-9 w-9 rounded-full object-cover"
-            />
-            <p className="text-sm font-medium">{about.trust}</p>
-          </div>
-          <p className="mt-4 text-sm leading-relaxed text-zinc-600">{PROFILE.summary}</p>
-          <dl className="mt-6 grid grid-cols-3 gap-4 border-t border-zinc-200 pt-5">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="text-2xl font-semibold">{stat.value}</dt>
-                <dd className="mt-1 text-xs text-zinc-500">{stat.label}</dd>
-              </div>
-            ))}
-          </dl>
+      {/* Photo band: second biography paragraph over your own design image */}
+      <Band label="What I do" className="text-white" innerClassName="">
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <Image src="/images/about-hero.png" alt="" fill sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-navy/85" />
         </div>
-      </div>
+        <p>{about.paragraphs[1]}</p>
+      </Band>
 
-      {/* Right column: highlight cards */}
-      <ul className="flex flex-col gap-4">
-        {about.highlights.map((item, index) => (
-          <li
-            key={item.title}
-            className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:bg-white/[0.07]"
-          >
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-zinc-900">
-              <Star className="h-4 w-4 fill-current" aria-hidden />
-            </span>
-            <p className="mt-5 text-lg font-semibold">
-              <span className="sr-only">Highlight {index + 1}: </span>
-              {item.title}
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-white/65">{item.text}</p>
-          </li>
-        ))}
-      </ul>
+      {/* Light band: leadership skills as the values list */}
+      <Band label="How I work" className="bg-white text-navy">
+        <ul className="space-y-3">
+          {leadership.map((item) => (
+            <li key={item} className="flex gap-3">
+              <span aria-hidden className="text-cta">
+                –
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </Band>
+
+      {/* Founder strip: your photo, name and role, with your three highlights beside it */}
+      <section className="bg-navy px-6 py-16 text-white md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:items-center">
+          <div className="flex items-center gap-5">
+            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full ring-4 ring-steel/30">
+              <Image src={PROFILE.photo} alt={`Portrait of ${PROFILE.name}`} fill sizes="96px" className="object-cover" />
+            </div>
+            <div>
+              <p className="font-serif text-2xl font-medium">{PROFILE.name}</p>
+              <p className="mt-1 text-sm text-steel">{PROFILE.tagline}</p>
+            </div>
+          </div>
+          <ul className="grid gap-4 sm:grid-cols-3">
+            {about.highlights.map((item) => (
+              <li key={item.title} className="border-l-2 border-steel pl-4">
+                <p className="font-semibold">{item.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </div>
   );
 }

@@ -15,9 +15,7 @@ export default function AboutPage() {
     <>
       <AboutHero />
 
-      <Section className="pt-12">
-        <AboutPanel />
-      </Section>
+      <AboutPanel />
 
       <Section className="border-t border-border">
         <div className="rounded-2xl border border-border bg-card p-8 md:p-10">

@@ -5,7 +5,7 @@ import type { Project } from "@/data/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
+    <Card className="flex h-full flex-col transition-[transform,box-shadow] duration-300 motion-safe:hover:-translate-y-1 hover:shadow-lg">
       <CardHeader>
         <CardTitle className="text-xl">{project.title}</CardTitle>
         <CardDescription className="text-sm leading-relaxed">{project.summary}</CardDescription>

@@ -25,7 +25,7 @@ export function Footer() {
   const socials = candidates.filter((s): s is Social => s !== null);
 
   return (
-    <footer className="bg-[#244A20] text-white/90">
+    <footer className="bg-navy-deep text-white/90">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="text-3xl font-extrabold tracking-tight text-white">{SITE.name}</p>
@@ -60,7 +60,7 @@ export function Footer() {
           <p className="mt-4 text-sm text-white/80">
             Open to conversations about software projects, study and opportunities.
           </p>
-          <Link href="/#contact" className="mt-4 inline-block text-sm font-semibold text-primary hover:text-primary/80">
+          <Link href="/contact" className="mt-4 inline-block text-sm font-semibold text-steel hover:text-steel/80">
             Contact me →
           </Link>
         </div>
@@ -70,7 +70,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-6 py-8 text-center text-sm text-white/80">
           <p>
             Copyright © {year} {SITE.name}. All rights reserved. | Built with{" "}
-            <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80">
+            <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="text-steel hover:text-steel/80">
               Next.js
             </a>
           </p>
@@ -86,9 +86,9 @@ export function Footer() {
                       aria-label={label}
                       target={isMail ? undefined : "_blank"}
                       rel={isMail ? undefined : "noopener noreferrer"}
-                      className="text-primary transition-colors hover:text-primary/80"
+                      className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white transition-colors hover:border-steel hover:text-steel"
                     >
-                      <Icon className="h-6 w-6" />
+                      <Icon className="h-5 w-5" />
                     </a>
                   </li>
                 );

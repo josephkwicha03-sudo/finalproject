@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { JsonLd } from "@/components/seo/json-ld";
+import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { siteMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = siteMetadata;
@@ -34,6 +35,7 @@ export default function RootLayout({
           >
             Skip to content
           </a>
+          <ScrollProgress />
           <div id="top" className="flex min-h-screen flex-col">
             <Navbar />
             <main id="main" className="flex-1">

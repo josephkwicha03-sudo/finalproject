@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeader } from "@/components/section-header";
@@ -30,6 +31,9 @@ export function ContactSection() {
             </a>
           </p>
         )}
+        <Button asChild variant="outline">
+          <Link href="/contact">Send a message</Link>
+        </Button>
       </div>
     </Section>
   );
